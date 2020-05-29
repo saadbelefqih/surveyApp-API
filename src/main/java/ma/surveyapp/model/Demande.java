@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,12 +29,10 @@ public class Demande {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idDemande;
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)
-	@JoinColumn(nullable = false)
-	@JsonManagedReference
+	@JoinColumn(name = "participant_id",nullable = false)
 	private Participant participant;
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)
-	@JoinColumn(nullable = false)
-	@JsonManagedReference
+	@JoinColumn(name = "annonce_id",nullable = false)
 	private Annonce annonce;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="dd-MM-yyyy")
@@ -44,7 +41,7 @@ public class Demande {
 	private Boolean isValide=false;
 	private Boolean isRefuse=false;
 	@ManyToOne(fetch=FetchType.LAZY, optional = false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "groupe_id",nullable = false)
 	private Groupe groupe;
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="demande")
 	private Set<Reponse> reponses;

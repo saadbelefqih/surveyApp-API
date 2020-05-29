@@ -69,9 +69,9 @@ public class LigneQuestionnaireServiceImpl implements LigneQuestionnaireService{
 				throw new ApiConflictException("Ligne already exist");
 			}
 			Annonce  a = groupeRepository.findById(lq.getGroupe().getIdEquipe()).get().getAnnonce();
-			if(!lq.getDateDebutReponse().after(a.getDateDebuteTravail())
+			if(!lq.getDateDebutReponse().after(a.getDateDebutTravail())
 					|| !lq.getDateDebutReponse().before(a.getDateFinTravail())
-					|| !lq.getDateFinReponse().after(a.getDateDebuteTravail())
+					|| !lq.getDateFinReponse().after(a.getDateDebutTravail())
 					|| !lq.getDateFinReponse().before(a.getDateFinTravail())
 					){
 				throw new ApiConflictException("Interval not respected");

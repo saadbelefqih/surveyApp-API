@@ -34,7 +34,7 @@ public class Question {
 	private String option4;
 	private Boolean isMultichoice=false;
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "questionnaire_id",nullable = false)
 	private Questionnaire questionnaire;
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="question")
 	private Set<ReponseDetails> reponses;

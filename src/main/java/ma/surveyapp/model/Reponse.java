@@ -22,10 +22,10 @@ public class Reponse {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idReponse;
 	@ManyToOne(fetch=FetchType.EAGER,optional=false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "ligne_questionnaire_id",nullable = false)
 	private LigneQuestionnaire ligneQuestionnaire;
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(nullable=false)
+	@JoinColumn(name = "demande_id",nullable=false)
 	private Demande demande;
 	private Boolean hasRespense;
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="reponse")

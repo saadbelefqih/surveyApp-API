@@ -1,9 +1,10 @@
 package ma.surveyapp.model;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,22 +18,10 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 @Entity
-@NoArgsConstructor
-@Getter
-@Setter
-public class Participant implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@Data
+public class Participant {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idParticipant;
 	//true pour Homme False pour Femme
@@ -46,17 +35,16 @@ public class Participant implements Serializable{
 	private String emailParticipant;
 	private String telParticipant;
 	private String adresseParticipant;
-	@ManyToOne(fetch=FetchType.LAZY,optional=false)
-	@JoinColumn(nullable = false)
-	@JsonManagedReference
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "ville_id",nullable = false)
 	private Ville ville;
-	@ManyToOne(fetch=FetchType.LAZY,optional=false)
-	@JoinColumn(nullable = false)
-	@JsonManagedReference
-    private Profession travail;
-	@OneToMany(mappedBy = "participant",fetch=FetchType.LAZY)
-	@JsonBackReference
-    private Set<Demande> demandes;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "profession_id",nullable = false)
+    private Profession profession;
+	@OneToMany(mappedBy = "participant",fetch=FetchType.LAZY, cascade={ CascadeType.PERSIST, CascadeType.MERGE })
+    private Set<Demande> demandes=new HashSet<Demande>();
+	
+	
 
-
+	
 }

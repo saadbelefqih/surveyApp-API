@@ -26,7 +26,7 @@ public class Profession {
 	@Column(nullable=false,unique=true)
 	private String libelleProfession;
 	private String descProfession;
-	@OneToMany(mappedBy="travail",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="profession",fetch=FetchType.LAZY)
 	@JsonBackReference
     private Set<Participant> participants;
 

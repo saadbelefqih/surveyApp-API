@@ -28,7 +28,7 @@ public class Questionnaire {
 	private String descQuestionnaire;
 	private Date DateAjoutQuestionnaire;
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "theme_id",nullable = false)
 	private Theme theme;
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="questionnaire")
 	private Set<Question>questions;

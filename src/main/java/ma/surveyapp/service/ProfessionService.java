@@ -2,16 +2,16 @@ package ma.surveyapp.service;
 
 
 
-import org.springframework.data.domain.Page;
+import java.util.List;
 
+import ma.surveyapp.dto.ProfessionDTO;
 import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.model.Profession;
 
 public interface ProfessionService {
-	Page<Profession> getAll(String name,int page,int size) throws ApiInternalServerErrorExeption;
-	Profession getByID(Long idprofession) throws ApiInternalServerErrorExeption;
-	Profession save(Profession profession) throws ApiInternalServerErrorExeption;
-	Profession update(Profession profession) throws ApiInternalServerErrorExeption;
+	List<ProfessionDTO> getAll(String name,int page,int size) throws ApiInternalServerErrorExeption;
+	ProfessionDTO getByID(Long idprofession) throws ApiInternalServerErrorExeption;
+	ProfessionDTO save(ProfessionDTO profession) throws ApiInternalServerErrorExeption;
+	ProfessionDTO update(ProfessionDTO profession) throws ApiInternalServerErrorExeption;
 	void delete(Long idprofession)throws ApiInternalServerErrorExeption;
 
 }

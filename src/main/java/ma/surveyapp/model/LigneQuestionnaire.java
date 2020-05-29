@@ -28,10 +28,10 @@ public class LigneQuestionnaire {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idLQ;
 	@ManyToOne(fetch=FetchType.EAGER,optional=false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "questionnaire_id",nullable = false)
 	private Questionnaire questionnaire;
 	@ManyToOne(fetch=FetchType.EAGER,optional=false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "groupe_id",nullable = false)
 	private Groupe groupe;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="dd-MM-yyyy")

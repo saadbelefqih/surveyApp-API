@@ -2,15 +2,17 @@ package ma.surveyapp.service;
 
 import java.util.List;
 
+import ma.surveyapp.dto.AnnonceDTO;
+import ma.surveyapp.dto.PublicCibleDTO;
 import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.model.PublicCible;
 
 public interface PublicCibleService {
 	
-	List<PublicCible> getAll() throws ApiInternalServerErrorExeption;
-	PublicCible getByID(Long idPublic)throws ApiInternalServerErrorExeption;
-	PublicCible save(PublicCible Public)throws ApiInternalServerErrorExeption;
-	PublicCible update(PublicCible Public)throws ApiInternalServerErrorExeption;
+	List<PublicCibleDTO> getAll() throws ApiInternalServerErrorExeption;
+	PublicCibleDTO getByID(Long idPublic)throws ApiInternalServerErrorExeption;
+	List<AnnonceDTO> getAnnoncesByPublicCible(Long idPublic)throws ApiInternalServerErrorExeption;
+	PublicCibleDTO save(PublicCibleDTO Public)throws ApiInternalServerErrorExeption;
+	PublicCibleDTO update(PublicCibleDTO Public)throws ApiInternalServerErrorExeption;
 	void delete(Long idPublic)throws ApiInternalServerErrorExeption;
 
 }

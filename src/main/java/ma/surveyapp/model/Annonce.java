@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +29,7 @@ public class Annonce {
 	private Long idAnnonce;
 	private String libelleAnnonce;
 	private String detailAnnonce;
-	private Integer nbBenevolatDemander;
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date dateAjout;
+	private Integer nbParticipantDemander;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateDebutPublication;
@@ -42,18 +38,16 @@ public class Annonce {
 	private Date dateFinPublication;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date dateDebuteTravail;
+	private Date dateDebutTravail;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateFinTravail;
 	@ManyToMany(mappedBy = "annonces")
     private Set<PublicCible> publics;
 	@OneToMany(mappedBy = "annonce",fetch=FetchType.LAZY)
-	@JsonBackReference
     private Set<Demande> demandes=new HashSet<>();
 	@OneToMany(mappedBy = "annonce",fetch=FetchType.LAZY)
     private Set<Groupe> groupes=new HashSet<>();
-	
 	
 
 }

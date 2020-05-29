@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ma.surveyapp.model.Annonce;
 
 public interface AnnonceRepository extends JpaRepository<Annonce, Long>{
-	Annonce findByLibelleAnnonceAndDateAjout(String libelle,Date date);
+	Annonce findByLibelleAnnonceAndDateDebutPublication(String libelle,Date date);
 
 }

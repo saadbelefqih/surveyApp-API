@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import ma.surveyapp.dto.ParticipantRequestDTO;
+import ma.surveyapp.dto.ParticipantResponseDTO;
 import ma.surveyapp.exception.ApiBadRequestException;
 import ma.surveyapp.exception.ApiConflictException;
 import ma.surveyapp.exception.ApiInternalServerErrorExeption;
 import ma.surveyapp.exception.ApiNoContentException;
 import ma.surveyapp.exception.ApiNotFoundException;
 import ma.surveyapp.exception.ApiNotModifiedException;
-import ma.surveyapp.model.Participant;
 import ma.surveyapp.service.ParticipantService;
 
 @RestController
@@ -32,17 +33,17 @@ public class ParticipantController {
 	private final ParticipantService participantService;
 	
 	@GetMapping
-	public List<Participant> getAll() throws ApiInternalServerErrorExeption, ApiNoContentException{
+	public List<ParticipantResponseDTO> getAll() throws ApiInternalServerErrorExeption, ApiNoContentException{
 		return participantService.getAll();
 	}
 	
 	@GetMapping("/{id}")
-	public Participant getOne(@PathVariable("id") Long id) throws ApiNoContentException, ApiInternalServerErrorExeption{
+	public ParticipantResponseDTO getOne(@PathVariable("id") Long id) throws ApiNoContentException, ApiInternalServerErrorExeption{
 		return participantService.getById(id);
 	}
 	
-	@PostMapping()
-	public Participant save(@RequestBody @Valid Participant participant,BindingResult bindingResult) throws ApiBadRequestException, ApiConflictException, ApiNotModifiedException, ApiInternalServerErrorExeption{
+	@PostMapping
+	public ParticipantResponseDTO save(@RequestBody @Valid ParticipantRequestDTO participant,BindingResult bindingResult) throws ApiBadRequestException, ApiConflictException, ApiNotModifiedException, ApiInternalServerErrorExeption{
 		if(bindingResult.hasErrors()){
 			throw new ApiBadRequestException(bindingResult.getAllErrors().toString());
 		}
@@ -50,7 +51,7 @@ public class ParticipantController {
 	}
 	
 	@PutMapping()
-	public Participant update(@RequestBody @Valid Participant participant,BindingResult bindingResult) throws ApiBadRequestException, ApiNotFoundException, ApiNotModifiedException, ApiInternalServerErrorExeption{
+	public ParticipantResponseDTO update(@RequestBody @Valid ParticipantRequestDTO participant,BindingResult bindingResult) throws ApiBadRequestException, ApiNotFoundException, ApiNotModifiedException, ApiInternalServerErrorExeption{
 		if(bindingResult.hasErrors()){
 			throw new ApiBadRequestException(bindingResult.getAllErrors().toString());
 		}

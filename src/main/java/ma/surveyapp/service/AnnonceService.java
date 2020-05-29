@@ -1,21 +1,23 @@
 package ma.surveyapp.service;
 
 import java.util.List;
+import java.util.Set;
 
+import ma.surveyapp.dto.AnnonceDTO;
+import ma.surveyapp.dto.PublicCibleDTO;
 import ma.surveyapp.exception.ApiConflictException;
 import ma.surveyapp.exception.ApiInternalServerErrorExeption;
 import ma.surveyapp.exception.ApiNoContentException;
 import ma.surveyapp.exception.ApiNotModifiedException;
-import ma.surveyapp.model.Annonce;
 
 public interface AnnonceService {
 	
-	List<Annonce> getAll()throws ApiInternalServerErrorExeption,ApiNoContentException;
-	Annonce getByID(Long idAnnonce)throws ApiNoContentException,ApiInternalServerErrorExeption;
-	Annonce save(Annonce annonce)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
-	void addPublicCible(Long idAnnonce,Long idpublic)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
-	void deletePublic(Long idAnnonce,Long idpublic)throws ApiNoContentException,ApiNotModifiedException, ApiInternalServerErrorExeption;
-	Annonce update(Annonce annonce)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
+	List<AnnonceDTO> getAll()throws ApiInternalServerErrorExeption;
+	AnnonceDTO getByID(Long idAnnonce)throws ApiNoContentException,ApiInternalServerErrorExeption;
+	AnnonceDTO save(AnnonceDTO annonceDTO)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
+	AnnonceDTO addPublicCibleToAnnonce(Long idAnnonce,Set<PublicCibleDTO> publicsCible)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
+	AnnonceDTO deletePublicPublicCibleFromAnnonce(Long idAnnonce,Set<PublicCibleDTO> publicsCible)throws ApiNoContentException,ApiNotModifiedException, ApiInternalServerErrorExeption;
+	AnnonceDTO update(AnnonceDTO annonceDTO)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
 	void delete(Long idAnnonce)throws ApiInternalServerErrorExeption ;
 
 }

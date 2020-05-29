@@ -36,7 +36,7 @@ public class Groupe {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateFinTravailGroupe;
 	@ManyToOne(fetch=FetchType.LAZY, optional = false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "annoce_id",nullable = false)
 	private Annonce annonce;
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="groupe")
 	private Set<Demande> demandes;

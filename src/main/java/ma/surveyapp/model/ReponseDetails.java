@@ -34,10 +34,10 @@ public class ReponseDetails {
 	@Column(nullable=false)
 	private Date dateReponse;
 	@ManyToOne(fetch=FetchType.EAGER,optional=false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "question_id",nullable = false)
 	private Question question;
 	@ManyToOne(fetch=FetchType.EAGER,optional=false)
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "reponse_id",nullable = false)
 	private Reponse reponse;
 
 }
