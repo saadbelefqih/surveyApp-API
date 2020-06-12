@@ -1,17 +1,25 @@
 package ma.surveyapp.service;
 
+
+
 import java.util.List;
 
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.model.Questionnaire;
+import org.springframework.data.domain.Page;
+
+import ma.surveyapp.dto.QuestionDTO;
+import ma.surveyapp.dto.QuestionnaireRequestDTO;
+import ma.surveyapp.dto.QuestionnaireResponseDTO;
 
 public interface QuestionnaireService {
 	
-	List<Questionnaire> getAll() throws ApiInternalServerErrorExeption;
-	List<Questionnaire> findbyTheme(Long idTheme)throws ApiInternalServerErrorExeption;
-	Questionnaire getbyID(Long idQuestionnaire)throws ApiInternalServerErrorExeption;
-	Questionnaire save(Questionnaire questionnaire)throws ApiInternalServerErrorExeption;
-	Questionnaire update(Questionnaire questionnaire)throws ApiInternalServerErrorExeption;
-	void delete(Long idQuestionnaire)throws ApiInternalServerErrorExeption;
+	Page<QuestionnaireResponseDTO> getAll(String intitule,int page,int size) ;
+	Page<QuestionnaireResponseDTO> findbyTheme(Long idTheme,int page,int size);
+	QuestionnaireResponseDTO getbyID(Long idQuestionnaire);
+	QuestionnaireResponseDTO save(QuestionnaireRequestDTO questionnaireRequestDTO);
+	void delete(Long idQuestionnaire);
+	QuestionnaireResponseDTO update(QuestionnaireRequestDTO questionnaireRequestDTO);
+	QuestionnaireResponseDTO addQuestionsToQuestionnaire(Long questionnnaireID,List<QuestionDTO> questions);
+	QuestionnaireResponseDTO removeQuestionsToQuestionnaire(Long questionnnaireID,List<QuestionDTO> questions);
+	
 
 }

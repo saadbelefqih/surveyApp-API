@@ -3,21 +3,39 @@ package ma.surveyapp.service;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+
 import ma.surveyapp.dto.AnnonceDTO;
+import ma.surveyapp.dto.DemandeResponseDTO;
+import ma.surveyapp.dto.GroupeDTO;
+import ma.surveyapp.dto.LigneQuestionnaireRequestDTO;
+import ma.surveyapp.dto.LigneQuestionnaireResponseDTO;
 import ma.surveyapp.dto.PublicCibleDTO;
-import ma.surveyapp.exception.ApiConflictException;
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.exception.ApiNoContentException;
-import ma.surveyapp.exception.ApiNotModifiedException;
 
 public interface AnnonceService {
 	
-	List<AnnonceDTO> getAll()throws ApiInternalServerErrorExeption;
-	AnnonceDTO getByID(Long idAnnonce)throws ApiNoContentException,ApiInternalServerErrorExeption;
-	AnnonceDTO save(AnnonceDTO annonceDTO)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
-	AnnonceDTO addPublicCibleToAnnonce(Long idAnnonce,Set<PublicCibleDTO> publicsCible)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
-	AnnonceDTO deletePublicPublicCibleFromAnnonce(Long idAnnonce,Set<PublicCibleDTO> publicsCible)throws ApiNoContentException,ApiNotModifiedException, ApiInternalServerErrorExeption;
-	AnnonceDTO update(AnnonceDTO annonceDTO)throws ApiConflictException,ApiNotModifiedException, ApiInternalServerErrorExeption;
-	void delete(Long idAnnonce)throws ApiInternalServerErrorExeption ;
+	Page<AnnonceDTO> getAll(int page, int size);
+	AnnonceDTO getByID(Long idAnnonce);
+	AnnonceDTO save(AnnonceDTO annonceDTO);
+	AnnonceDTO addPublicCibleToAnnonce(Long idAnnonce,Set<PublicCibleDTO> publicsCible);
+	AnnonceDTO deletePublicPublicCibleFromAnnonce(Long idAnnonce,Set<PublicCibleDTO> publicsCible);
+	AnnonceDTO update(AnnonceDTO annonceDTO);
+	void delete(Long idAnnonce);
+	
+	
+	Page<GroupeDTO> getGroupesByAnnonce(Long idAnnonce,int page, int size);
+	GroupeDTO getGroupeByAnnonce(Long idGroupe,Long idAnnonce);
+	GroupeDTO addGroupeToAnnonce(Long idAnnonce,GroupeDTO groupeDTO);
+	void deleteGroupeFromAnnonce(Long idAnnonce,Long groupeid);
+	
+	Page<LigneQuestionnaireResponseDTO> getLignesQuestionnaireToGroupeByGroupe(Long idGroupe,Long idAnnonce,int page,int size);
+	List<LigneQuestionnaireResponseDTO> saveLignesQuestionnairToGroupeeByGroupe(Long idGroupe,Long idAnnonce,List<LigneQuestionnaireRequestDTO> lignesQuestionnaireDTO);
+	void deleteLignesQuestionnairToGroupeeByGroupe(Long idGroupe,Long idAnnonce,List<LigneQuestionnaireRequestDTO> lignesQuestionnaireDTO);
+	
+	Page<DemandeResponseDTO>getDemandesByAnnonce(Long idAnnonce,int page, int size);
+	Page<DemandeResponseDTO>getValideDemandesByAnnonce(Long idAnnonce,int page, int size);
+	Page<DemandeResponseDTO>getRefuseDemandesByAnnonce(Long idAnnonce,int page, int size);
+	Page<DemandeResponseDTO>getPendingDemandesByAnnonce(Long idAnnonce,int page, int size);
+
 
 }

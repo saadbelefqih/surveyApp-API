@@ -1,17 +1,17 @@
 package ma.surveyapp.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import ma.surveyapp.dto.ParticipantRequestDTO;
 import ma.surveyapp.dto.ParticipantResponseDTO;
 import ma.surveyapp.exception.ApiConflictException;
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
 import ma.surveyapp.exception.ApiNoContentException;
 import ma.surveyapp.exception.ApiNotFoundException;
 import ma.surveyapp.exception.ApiNotModifiedException;
@@ -23,7 +23,6 @@ import ma.surveyapp.service.ParticipantService;
 import ma.surveyapp.util.modelmapper.ParticipantMapper;
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ParticipantServiceImpl implements ParticipantService{
 	
 	private final ParticipantRepository participantRepository;
@@ -31,51 +30,42 @@ public class ParticipantServiceImpl implements ParticipantService{
 	private final ProfessionRepository professionRepository;
 
 	@Override
-	public List<ParticipantResponseDTO> getAll() throws ApiInternalServerErrorExeption, ApiNoContentException {
-		try {
-			
-			return participantRepository.findAll()
+	public List<ParticipantResponseDTO> getAll(int page,int size){
+			List<ParticipantResponseDTO> list = new ArrayList<ParticipantResponseDTO>();
+			list= participantRepository.findAll(PageRequest.of(page, size))
 					.stream().map(part->{
 						return ParticipantMapper.ParticipantToParticipantResponseDto(part);
 					}).collect(Collectors.toList());
-			
-		} catch (Exception e){
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-		}
-	}
-
-	@Override
-	public ParticipantResponseDTO getById(Long idParticipant) throws ApiNoContentException, ApiInternalServerErrorExeption {
-		try{
-			if(participantRepository.existsById(idParticipant)){
-				return ParticipantMapper.ParticipantToParticipantResponseDto(participantRepository.getOne(idParticipant));
+			if(!list.isEmpty()){
+				return list;
 			}
-			throw new ApiNoContentException("No result founded");
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-		}
+			throw new ApiNotFoundException("No result founded");
 	}
 
 	@Override
-	public ParticipantResponseDTO save(ParticipantRequestDTO participantRequestDTO)
-			throws ApiConflictException, ApiNotModifiedException, ApiInternalServerErrorExeption {
-		try {
+	public ParticipantResponseDTO getById(Long idParticipant) {
+			if(participantRepository.existsById(idParticipant)){
+				return ParticipantMapper.ParticipantToParticipantResponseDto(participantRepository.getOne(idParticipant));}
+			throw new ApiNotFoundException("No result founded");
+		
+	}
+
+	@Override
+	public ParticipantResponseDTO save(ParticipantRequestDTO participantRequestDTO){
 			if(participantRepository.findByNomParticipantIgnoreCaseAndPrenomParticipantIgnoreCase(participantRequestDTO.getNom(),participantRequestDTO.getPrenom())!=null){
 				throw new ApiConflictException("Participant already exist");
 			}
 			if(participantRequestDTO.getVille()==null){
-				throw new ApiNoContentException("Ville not founded"); 
+				throw new ApiNotFoundException("Ville not founded"); 
 			}
 			if(!villeRepository.existsById(participantRequestDTO.getVille())){
-				throw new ApiNoContentException("Ville not founded"); 
+				throw new ApiNotFoundException("Ville not founded"); 
 			}
 			if(participantRequestDTO.getProfession()==null){
-				throw new ApiNoContentException("Profession not founded"); 
+				throw new ApiNotFoundException("Profession not founded"); 
 			}
 			if(!professionRepository.existsById(participantRequestDTO.getProfession())){
-				throw new ApiNoContentException("Profession not founded"); 
+				throw new ApiNotFoundException("Profession not founded"); 
 			}
 			//convert Participant request DTO  to Participant persistant
 			Participant p = new Participant();
@@ -85,17 +75,11 @@ public class ParticipantServiceImpl implements ParticipantService{
 				return ParticipantMapper.ParticipantToParticipantResponseDto(participantSaved);
 			}
 			throw new ApiNotModifiedException("Participant is unsuccessfully inserted");
-		} catch (Exception e) {
-			log.error(e.getMessage()+" | "+e.toString()+" | "+e.getLocalizedMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-			
-		}
+		
 	}
 
 	@Override
-	public ParticipantResponseDTO update(ParticipantRequestDTO participantRequestDTO)
-			throws ApiNotFoundException, ApiNotModifiedException, ApiInternalServerErrorExeption {
-		try {
+	public ParticipantResponseDTO update(ParticipantRequestDTO participantRequestDTO){
 			if(!participantRepository.existsById(participantRequestDTO.getId())){
 				throw new ApiNotFoundException("Participant does not exist");
 			}
@@ -110,21 +94,12 @@ public class ParticipantServiceImpl implements ParticipantService{
 			if(participantSaved!=null){
 				return ParticipantMapper.ParticipantToParticipantResponseDto(participantSaved);
 			}
-			throw new ApiNotModifiedException("Participant is unsuccessfully inserted");
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-		}
+			throw new ApiNotModifiedException("Participant is unsuccessfully updated");
 	}
 
 	@Override
-	public void delete(Long idParticipant) throws ApiInternalServerErrorExeption {
-		try {
+	public void delete(Long idParticipant){
 			participantRepository.deleteById(idParticipant);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-		}
 	}
 	//convert Participant request DTO  to Participant persistant
 	private Participant participantDtoToParticipant(Participant participant, ParticipantRequestDTO participantRequestDTO){

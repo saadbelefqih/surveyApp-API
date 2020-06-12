@@ -20,11 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import ma.surveyapp.dto.ProfessionDTO;
 import ma.surveyapp.exception.ApiBadRequestException;
-import ma.surveyapp.exception.ApiConflictException;
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.exception.ApiNoContentException;
-import ma.surveyapp.exception.ApiNotFoundException;
-import ma.surveyapp.exception.ApiNotModifiedException;
 import ma.surveyapp.service.ProfessionService;
 
 @RestController
@@ -36,25 +31,25 @@ public class ProfessionController {
 	private final ProfessionService professionService;
 	
 	@GetMapping()
-	public List<ProfessionDTO> getByLibelle(@RequestParam(name="name",defaultValue="")String libelle,@RequestParam(name="page",defaultValue="0")int page ) throws ApiInternalServerErrorExeption{
+	public List<ProfessionDTO> getByLibelle(@RequestParam(name="name",defaultValue="")String libelle,@RequestParam(name="page",defaultValue="0")int page ){
 		return professionService.getAll(libelle, page, 10);
 	}
 	
 	@GetMapping("/{id}")
-	public ProfessionDTO getById(@PathVariable("id")Long id) throws ApiNoContentException, ApiInternalServerErrorExeption{
+	public ProfessionDTO getById(@PathVariable("id")Long id){
 		return professionService.getByID(id);
 	}
 	
-	@PostMapping()
-	public ProfessionDTO save(@RequestBody @Valid ProfessionDTO profession,BindingResult bindingResult ) throws ApiBadRequestException, ApiConflictException, ApiNotModifiedException, ApiInternalServerErrorExeption{
+	@PostMapping
+	public ProfessionDTO save(@RequestBody @Valid ProfessionDTO profession,BindingResult bindingResult ){
 		if(bindingResult.hasErrors()){
 			throw new ApiBadRequestException(bindingResult.getAllErrors().toString());
 		}
 		return professionService.save(profession);
 	}
 	
-	@PutMapping()
-	public ProfessionDTO update(@RequestBody @Valid ProfessionDTO profession,BindingResult bindingResult) throws ApiNotFoundException, ApiNotModifiedException, ApiInternalServerErrorExeption, ApiBadRequestException{
+	@PutMapping
+	public ProfessionDTO update(@RequestBody @Valid ProfessionDTO profession,BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
 			throw new ApiBadRequestException(bindingResult.getAllErrors().toString());
 		}
@@ -62,7 +57,7 @@ public class ProfessionController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable("id")Long id) throws ApiInternalServerErrorExeption{
+	public void delete(@PathVariable("id")Long id) {
 		professionService.delete(id);
 	}
 

@@ -2,33 +2,40 @@ package ma.surveyapp.service;
 
 import java.util.List;
 
-import ma.surveyapp.exception.ApiConflictException;
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.exception.ApiNoContentException;
-import ma.surveyapp.exception.ApiNotModifiedException;
-import ma.surveyapp.model.Demande;
+import org.springframework.data.domain.Page;
+
+import ma.surveyapp.dto.DemandeRequestDTO;
+import ma.surveyapp.dto.DemandeResponseDTO;
+import ma.surveyapp.dto.GroupeDTO;
 
 
 public interface DemandeService {
+	/*
+	List<Demande> getAllByAnnonce(Long idAnnonce);
+	List<Demande> getValidateByAnnonce(Long idAnnonce);
+	List<Demande> getPendingByAnnonce(Long idAnnonce);
+	List<Demande> getRefuseByAnnonce(Long idAnnonce);
+
+	List<Demande> getAllByVolontaire(Long idVolontaire);
+	List<Demande> getRefuseByVolontaire(Long idVolontaire);
+	List<Demande> getValidateByVolontaire(Long idVolontaire);
+	List<Demande> getPendingByVolontaire(Long idVolontaire);
+	*/
+	DemandeResponseDTO getByID(Long idDemande);
+	DemandeResponseDTO getByDemandeIdAndAnnonceId(Long idDemande,Long idAnnonce);
+	DemandeResponseDTO getByDemandeIdAndParticipantId(Long idDemande,Long idparticipant);
+	Page<DemandeResponseDTO> getByParticipantId(Long idparticipant,int page, int size);
+	Page<DemandeResponseDTO> getByValideDemandeByParticipantId(Long idparticipant,int page, int size);
+	Page<DemandeResponseDTO> getByRefuseDemandeByParticipantId(Long idparticipant,int page, int size);
+	Page<DemandeResponseDTO> getByPendingDemandeByParticipantId(Long idparticipant,int page, int size);
+	DemandeResponseDTO save(DemandeRequestDTO demandeRequestDTO);
+	void setValidate(List<DemandeRequestDTO> demandes);
+	void setPending(List<DemandeRequestDTO> demandes);
+	void setRefuse(List<DemandeRequestDTO> demandes);
+	Boolean supprimerDemande(Long idDemande);
+
+	GroupeDTO addDemandesToGroupe(Long idAnnonce,Long idgroupe,List<DemandeRequestDTO> demandesRequestDTO);
+	DemandeResponseDTO removeDemandeFromGroupe(DemandeRequestDTO demandeRequestDTO);
+
 	
-	List<Demande> getAllByAnnonce(Long idAnnonce) throws ApiNoContentException,ApiInternalServerErrorExeption;
-	List<Demande> getValidateByAnnonce(Long idAnnonce) throws ApiNoContentException,ApiInternalServerErrorExeption;
-	List<Demande> getPendingByAnnonce(Long idAnnonce) throws ApiNoContentException,ApiInternalServerErrorExeption;
-	List<Demande> getRefuseByAnnonce(Long idAnnonce)throws ApiNoContentException,ApiInternalServerErrorExeption;
-
-	List<Demande> getAllByVolontaire(Long idVolontaire) throws ApiNoContentException,ApiInternalServerErrorExeption;
-	List<Demande> getRefuseByVolontaire(Long idVolontaire)throws ApiNoContentException,ApiInternalServerErrorExeption;
-	List<Demande> getValidateByVolontaire(Long idVolontaire) throws ApiNoContentException,ApiInternalServerErrorExeption;
-	List<Demande> getPendingByVolontaire(Long idVolontaire) throws ApiNoContentException,ApiInternalServerErrorExeption;
-	
-	Demande getByID(Long idDemande) throws ApiNoContentException,ApiInternalServerErrorExeption;
-	Demande save(Demande demande) throws ApiConflictException,ApiNotModifiedException,ApiInternalServerErrorExeption;
-	Demande setValidate(Long idDemande) throws ApiNoContentException,ApiNotModifiedException,ApiInternalServerErrorExeption;
-	Demande setPending(Long idDemande) throws ApiNoContentException,ApiNotModifiedException,ApiInternalServerErrorExeption;
-	Demande setRefuse(Long demande) throws ApiNoContentException,ApiNotModifiedException,ApiInternalServerErrorExeption;
-	Demande delete(Long idDemande) throws ApiInternalServerErrorExeption;
-
-
-	void addDemandeToGroupe(Long idDemande,Long idGroupe) throws ApiNoContentException,ApiNotModifiedException,ApiInternalServerErrorExeption;
-
 }

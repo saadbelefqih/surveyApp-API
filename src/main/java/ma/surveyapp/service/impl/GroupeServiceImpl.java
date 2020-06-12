@@ -1,26 +1,26 @@
 package ma.surveyapp.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import ma.surveyapp.exception.ApiBadRequestException;
-import ma.surveyapp.exception.ApiConflictException;
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.exception.ApiNoContentException;
-import ma.surveyapp.exception.ApiNotFoundException;
-import ma.surveyapp.exception.ApiNotModifiedException;
-import ma.surveyapp.model.Groupe;
-import ma.surveyapp.repository.GroupeRepository;
+//import java.util.List;
+//
+//import org.springframework.stereotype.Service;
+//import org.springframework.util.CollectionUtils;
+//
+//import lombok.RequiredArgsConstructor;
+//import lombok.extern.slf4j.Slf4j;
+//import ma.surveyapp.exception.ApiBadRequestException;
+//import ma.surveyapp.exception.ApiConflictException;
+//import ma.surveyapp.exception.ApiInternalServerErrorExeption;
+//import ma.surveyapp.exception.ApiNoContentException;
+//import ma.surveyapp.exception.ApiNotFoundException;
+//import ma.surveyapp.exception.ApiNotModifiedException;
+//import ma.surveyapp.model.Groupe;
+//import ma.surveyapp.repository.GroupeRepository;
 import ma.surveyapp.service.GroupeService;
-@Service
-@RequiredArgsConstructor
-@Slf4j
+//@Service
+//@RequiredArgsConstructor
+//@Slf4j
 public class GroupeServiceImpl implements GroupeService{
-	
+	/*
 	private final GroupeRepository groupeRepository;
 
 	@Override
@@ -53,7 +53,7 @@ public class GroupeServiceImpl implements GroupeService{
 	@Override
 	public Groupe save(Groupe groupe) throws ApiInternalServerErrorExeption {
 		try {
-			if(groupeRepository.findByIntituleEquipeIgnoreCase(groupe.getIntituleEquipe())!=null){
+			if(groupeRepository.findByIntituleGroupeIgnoreCase(groupe.getIntituleGroupe())!=null){
 				throw new ApiConflictException("Groupe already exist");
 			}
 			Groupe groupeSaved = groupeRepository.save(groupe);
@@ -73,7 +73,7 @@ public class GroupeServiceImpl implements GroupeService{
 	@Override
 	public Groupe update(Groupe groupe) throws ApiInternalServerErrorExeption {
 		try {
-			if(!groupeRepository.existsById(groupe.getIdEquipe())){
+			if(!groupeRepository.existsById(groupe.getIdGroupe())){
 				throw new ApiNotFoundException("Groupe does not exist");
 			}
 			Groupe groupeSaved = groupeRepository.save(groupe);
@@ -101,6 +101,6 @@ public class GroupeServiceImpl implements GroupeService{
 		
 	}
 
-
+*/
 
 }

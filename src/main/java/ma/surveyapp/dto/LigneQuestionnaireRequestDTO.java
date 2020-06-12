@@ -2,16 +2,18 @@ package ma.surveyapp.dto;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 @Data
 public class LigneQuestionnaireRequestDTO {
 	private Long idLQ;
-	@NotBlank
+	@NotNull
 	private Long idQuestionnaire;
-	@NotBlank
+	@NotNull
 	private Long idGroupe;
+	@NotNull
 	private Date dateDebutReponse;
+	@NotNull
 	private Date dateFinReponse;
 }

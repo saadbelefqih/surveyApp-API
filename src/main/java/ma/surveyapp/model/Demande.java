@@ -40,8 +40,8 @@ public class Demande {
 	private Boolean isPending=true;
 	private Boolean isValide=false;
 	private Boolean isRefuse=false;
-	@ManyToOne(fetch=FetchType.LAZY, optional = false)
-	@JoinColumn(name = "groupe_id",nullable = false)
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "groupe_id")
 	private Groupe groupe;
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="demande")
 	private Set<Reponse> reponses;

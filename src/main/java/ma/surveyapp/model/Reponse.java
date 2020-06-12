@@ -2,6 +2,7 @@ package ma.surveyapp.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class Reponse {
 	@JoinColumn(name = "demande_id",nullable=false)
 	private Demande demande;
 	private Boolean hasRespense;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="reponse")
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="reponse",cascade=CascadeType.ALL)
 	private Set<ReponseDetails> reponsesDetails;
 
 }

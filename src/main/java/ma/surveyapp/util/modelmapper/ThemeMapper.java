@@ -1,5 +1,7 @@
 package ma.surveyapp.util.modelmapper;
 
+import java.util.HashSet;
+
 import ma.surveyapp.dto.ThemeDTO;
 import ma.surveyapp.model.Theme;
 
@@ -9,6 +11,7 @@ public class ThemeMapper {
 		themeDTO.setIdTheme(theme.getIdTheme());
 		themeDTO.setDescTheme(theme.getDescTheme());
 		themeDTO.setIntituleTheme(theme.getIntituleTheme());
+		themeDTO.setNbQuestionnaire(theme.getQuestionnaires().size());
 		return themeDTO;
 	}
 	
@@ -17,6 +20,7 @@ public class ThemeMapper {
 		theme.setIdTheme(themeDTO.getIdTheme());
 		theme.setDescTheme(themeDTO.getDescTheme());
 		theme.setIntituleTheme(themeDTO.getIntituleTheme());
+		theme.setQuestionnaires(new HashSet<>());
 		return theme;
 	}
 

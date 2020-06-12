@@ -1,6 +1,6 @@
 package ma.surveyapp.exception;
 
-public class ApiInternalServerErrorExeption extends Exception{
+public class ApiInternalServerErrorExeption extends RuntimeException{
 	
 	/**
 	 * 

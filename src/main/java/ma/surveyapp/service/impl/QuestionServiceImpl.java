@@ -1,6 +1,6 @@
 package ma.surveyapp.service.impl;
 
-import java.util.List;
+/*import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -13,13 +13,13 @@ import ma.surveyapp.exception.ApiNoContentException;
 import ma.surveyapp.exception.ApiNotFoundException;
 import ma.surveyapp.exception.ApiNotModifiedException;
 import ma.surveyapp.model.Question;
-import ma.surveyapp.repository.QuestionRepository;
+import ma.surveyapp.repository.QuestionRepository;*/
 import ma.surveyapp.service.QuestionService;
-@Service
+/*@Service
 @RequiredArgsConstructor
-@Slf4j
+@Slf4j*/
 public class QuestionServiceImpl implements QuestionService{
-	
+	/*
 	private final QuestionRepository questionRepository;
 
 	@Override
@@ -94,5 +94,5 @@ public class QuestionServiceImpl implements QuestionService{
 	}
 	
 	
-
+*/
 }

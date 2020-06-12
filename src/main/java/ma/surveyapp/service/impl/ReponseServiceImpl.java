@@ -1,33 +1,51 @@
 package ma.surveyapp.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Set;
+//import java.util.concurrent.atomic.AtomicBoolean;
+//import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+//import org.springframework.util.CollectionUtils;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.exception.ApiNoContentException;
+//import lombok.extern.slf4j.Slf4j;
+import ma.surveyapp.dto.ReponseRequestDTO;
+import ma.surveyapp.dto.ReponseResponseDTO;
+//import ma.surveyapp.exception.ApiInternalServerErrorExeption;
+//import ma.surveyapp.exception.ApiNoContentException;
 import ma.surveyapp.exception.ApiNotFoundException;
 import ma.surveyapp.exception.ApiNotModifiedException;
+//import ma.surveyapp.model.Demande;
+import ma.surveyapp.model.Question;
 import ma.surveyapp.model.Reponse;
+import ma.surveyapp.model.ReponseDetails;
 import ma.surveyapp.repository.DemandeRepository;
-import ma.surveyapp.repository.LigneQuestionnaireRepository;
+//import ma.surveyapp.repository.LigneQuestionnaireRepository;
 import ma.surveyapp.repository.ReponseRepository;
-import ma.surveyapp.repository.ParticipantRepository;
+//import ma.surveyapp.repository.ParticipantRepository;
+import ma.surveyapp.repository.QuestionRepository;
+import ma.surveyapp.repository.ReponseDetailsRepository;
 import ma.surveyapp.service.ReponseService;
+import ma.surveyapp.util.modelmapper.ReponseMapper;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ReponseServiceImpl implements ReponseService{
 	private final ReponseRepository reponseRepository;
 	private final DemandeRepository demandeRepository;
-	private final LigneQuestionnaireRepository lQRepository;
-	private final ParticipantRepository participantRepository;
+	//private final LigneQuestionnaireRepository lQRepository;
+	//private final ParticipantRepository participantRepository;
+	private final ReponseDetailsRepository reponseDetailsRepository;
+	private final QuestionRepository questionRepository;
+/*	
 	@Override
 	public List<Reponse> getAllByLigneQuestionnaireAndVolontaire(Long idLigneQuestionnaire, Long idVolontaire)
 			throws ApiNotFoundException, ApiNoContentException, ApiInternalServerErrorExeption {
@@ -134,41 +152,18 @@ public class ReponseServiceImpl implements ReponseService{
 			
 		}
 	}
+
 	@Override
-	public List<Reponse> getAllByToResponseByDemande(Long idDemande)
-			throws ApiNotFoundException, ApiNoContentException, ApiInternalServerErrorExeption {
-		try {
+	public List<Reponse> getAllByRespondedByDemande(Long idDemande){
 			if(!demandeRepository.existsById(idDemande)){
 				throw new ApiNotFoundException("Demande does not exist");
 			}
-			
-			if(CollectionUtils.isEmpty(reponseRepository.findByDemandeAndHasRespenseFalse(demandeRepository.findById(idDemande).get()))){
+			Demande demande= new Demande();
+			demande=demandeRepository.findById(idDemande).get();
+			if(reponseRepository.findByDemandeAndHasRespenseTrue(demande).isEmpty()){
 				throw new ApiNoContentException("No result founded");
 			}
-			return reponseRepository.findByDemandeAndHasRespenseFalse(demandeRepository.findById(idDemande).get());
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-			
-		}
-	}
-	@Override
-	public List<Reponse> getAllByRespondedByDemande(Long idDemande)
-			throws ApiNotFoundException, ApiNoContentException, ApiInternalServerErrorExeption {
-		try {
-			if(!demandeRepository.existsById(idDemande)){
-				throw new ApiNotFoundException("Demande does not exist");
-			}
-			
-			if(CollectionUtils.isEmpty(reponseRepository.findByDemandeAndHasRespenseTrue(demandeRepository.findById(idDemande).get()))){
-				throw new ApiNoContentException("No result founded");
-			}
-			return reponseRepository.findByDemandeAndHasRespenseTrue(demandeRepository.findById(idDemande).get());
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-			
-		}
+			return reponseRepository.findByDemandeAndHasRespenseTrue(demande);
 	}
 	@Override
 	public Reponse getById(Long id) throws ApiNoContentException, ApiInternalServerErrorExeption {
@@ -184,35 +179,69 @@ public class ReponseServiceImpl implements ReponseService{
 			throw new ApiInternalServerErrorExeption("Internal Server Error");
 		}
 	}
+	*/
 	@Override
-	public Reponse save(Reponse reponse)
-			throws ApiNotFoundException, ApiNotModifiedException, ApiInternalServerErrorExeption {
-		try {
-			if(!reponseRepository.existsById(reponse.getIdReponse())){
+	public Page<ReponseResponseDTO> getToAnswersByDemande(Long idDemande,Long idParticipant,int page,int size){
+			if(!demandeRepository.existsById(idDemande)){
 				throw new ApiNotFoundException("Demande does not exist");
 			}
-			if(reponse.getReponsesDetails().size()<=0){
+			if(demandeRepository.getOne(idDemande).getParticipant().getIdParticipant()!=idParticipant){
+				throw new ApiNotFoundException("Error Participant !!!");
+			}
+			List<ReponseResponseDTO> lists=new ArrayList<>();
+			lists=reponseRepository.findResponseByDemandeIdAndDate(idDemande,new Date()).stream().map(reponse->{
+				 return ReponseMapper.ReponseToReponseResponseDTO(reponse);
+			 }).collect(Collectors.toList());
+			if(!lists.isEmpty()){
+			return new PageImpl<ReponseResponseDTO>(lists, PageRequest.of(page, size), lists.size());
+			}
+			throw new ApiNotFoundException("No result founded");
+	}
+	
+	@Override
+	public Boolean saveAnswer(ReponseRequestDTO reponseRequestDTO,Long idDemande){
+			if(!reponseRepository.existsById(reponseRequestDTO.getIdReponse())){
+				throw new ApiNotFoundException("Demande does not exist");
+			}
+			if(reponseRequestDTO.getReponsesDetails().isEmpty()){
 				throw new ApiNotFoundException("Reponses does not exist");
 			}
-			Reponse rep = reponseRepository.findById(reponse.getIdReponse()).get();
-			rep.setHasRespense(true);
-			rep.setReponsesDetails(reponse.getReponsesDetails());
-			Reponse reponseAdded=reponseRepository.save(rep);
-			if(reponseAdded!=null){
-				return reponseAdded;
-			}
-			throw new ApiNotModifiedException("Reponse is unsuccessfully inserted");
 			
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-		}
-	}
-	@Override
-	public void delete(Long id) throws ApiNotModifiedException, ApiInternalServerErrorExeption {
-		// TODO Auto-generated method stub
+			Reponse rep = reponseRepository.findById(reponseRequestDTO.getIdReponse()).get();
+			if(rep.getDemande().getIdDemande()!=idDemande){
+				throw new ApiNotFoundException("Participant Error !!!");
+			}
+			Set<ReponseDetails> reponsesDetails=new HashSet<>();
+			reponseRequestDTO.getReponsesDetails().forEach(reponseDTO->{
+				if(questionRepository.existsById(reponseDTO.getQuestion())) 
+						{
+					Question question = questionRepository.getOne(reponseDTO.getQuestion());
+						if(reponseDetailsRepository.findByReponseAndQuestion(rep,question)==null){
+					ReponseDetails reponseDetails = new ReponseDetails();
+					reponseDetails.setIdRd(null);
+					reponseDetails.setDateReponse(new Date());
+					reponseDetails.setIsOption1(reponseDTO.getIsOption1());
+					reponseDetails.setIsOption2(reponseDTO.getIsOption2());
+					reponseDetails.setIsOption3(reponseDTO.getIsOption3());
+					reponseDetails.setIsOption4(reponseDTO.getIsOption4());
+					reponseDetails.setReponse(rep);
+					reponseDetails.setQuestion(question);
+					reponsesDetails.add(reponseDetails);
+				}
+						}
+			});
+			rep.setReponsesDetails(reponsesDetails);
+			rep.setHasRespense(true);
+			Reponse repSaved=new Reponse();
+			repSaved=reponseRepository.save(rep);
+			if(!repSaved.getReponsesDetails().isEmpty()){
+				return true;
+			}
+			
+			throw new ApiNotModifiedException("Reponse is unsuccessfully inserted");
 		
 	}
+	
 	
 
 	

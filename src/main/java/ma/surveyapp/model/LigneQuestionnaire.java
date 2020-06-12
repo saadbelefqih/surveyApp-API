@@ -3,6 +3,7 @@ package ma.surveyapp.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,7 +42,7 @@ public class LigneQuestionnaire {
 	@DateTimeFormat(pattern="dd-MM-yyyy")
 	@Column(nullable=false)
 	private Date dateFinReponse;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="ligneQuestionnaire")
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="ligneQuestionnaire",cascade=CascadeType.ALL)
 	private Set<Reponse> reponses;
 
 }

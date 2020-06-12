@@ -23,13 +23,12 @@ import lombok.NoArgsConstructor;
 public class Question {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idQuestion;
-	@Column(unique=true,nullable=false)
+	@Column(nullable=false)
 	private String textQuestion;
 	@Column(nullable=false)
 	private String option1;
 	@Column(nullable=false)
 	private String option2;
-	@Column(nullable=false)
 	private String option3;
 	private String option4;
 	private Boolean isMultichoice=false;

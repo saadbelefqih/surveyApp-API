@@ -1,19 +1,15 @@
 package ma.surveyapp.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
-import ma.surveyapp.exception.ApiConflictException;
-import ma.surveyapp.exception.ApiInternalServerErrorExeption;
-import ma.surveyapp.exception.ApiNoContentException;
-import ma.surveyapp.exception.ApiNotFoundException;
-import ma.surveyapp.exception.ApiNotModifiedException;
-import ma.surveyapp.model.Theme;
+import ma.surveyapp.dto.ThemeDTO;
 
 public interface ThemeService {
-	List<Theme> getAll()throws ApiNoContentException,ApiInternalServerErrorExeption;
-	Theme getByID(Long idTheme)throws ApiNoContentException,ApiInternalServerErrorExeption;
-	Theme save(Theme Theme)throws ApiConflictException,ApiNotModifiedException,ApiInternalServerErrorExeption;
-	Theme update(Theme Theme)throws ApiNotFoundException,ApiNotModifiedException,ApiInternalServerErrorExeption;
-	void delete(Long idTheme)throws ApiInternalServerErrorExeption;
+	
+	Page<ThemeDTO> getAll(String intitule,int page,int size);
+	ThemeDTO getByID(Long idTheme);
+	ThemeDTO save(ThemeDTO themeDTO);
+	ThemeDTO update(ThemeDTO themeDTO);
+	void delete(Long idTheme);
 
 }

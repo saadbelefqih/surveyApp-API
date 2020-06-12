@@ -8,7 +8,7 @@ import ma.surveyapp.exception.ApiInternalServerErrorExeption;
 
 public interface PublicCibleService {
 	
-	List<PublicCibleDTO> getAll() throws ApiInternalServerErrorExeption;
+	List<PublicCibleDTO> getAll();
 	PublicCibleDTO getByID(Long idPublic)throws ApiInternalServerErrorExeption;
 	List<AnnonceDTO> getAnnoncesByPublicCible(Long idPublic)throws ApiInternalServerErrorExeption;
 	PublicCibleDTO save(PublicCibleDTO Public)throws ApiInternalServerErrorExeption;

@@ -29,7 +29,7 @@ public class PublicCibleController {
 	private final PublicCibleService publicCibleService;
 	
 	@GetMapping
-	public List<PublicCibleDTO> getAll() throws ApiInternalServerErrorExeption{
+	public List<PublicCibleDTO> getAll(){
 		return publicCibleService.getAll();
 	}
 	

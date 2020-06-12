@@ -25,10 +25,10 @@ import lombok.Setter;
 @Setter
 public class Groupe {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long idEquipe;
-	private String intituleEquipe;
-	private String descEquipe;
-	private Integer nbVolontaire;
+	private Long idGroupe;
+	private String intituleGroupe;
+	private String descGroupe;
+	private Integer nbParticipant;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateDebuteTravailGroupe;

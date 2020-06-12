@@ -3,6 +3,7 @@ package ma.surveyapp.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class Questionnaire {
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)
 	@JoinColumn(name = "theme_id",nullable = false)
 	private Theme theme;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="questionnaire")
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="questionnaire",cascade=CascadeType.ALL)
 	private Set<Question>questions;
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="questionnaire")
 	private Set<LigneQuestionnaire>lignesQuestionnaire;

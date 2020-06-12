@@ -30,45 +30,35 @@ public class LigneQuestionnaireServiceImpl implements LigneQuestionnaireService{
 	private final ReponseRepository reponseRepository;
 
 	@Override
-	public List<LigneQuestionnaire> getAll() throws ApiInternalServerErrorExeption,ApiNoContentException {
-		try {
+	public List<LigneQuestionnaire> getAll(){
 			if(!CollectionUtils.isEmpty(ligneQuestionnaireRepository.findAll())){
 				throw new ApiNoContentException("No result founded");
 			}
 			return ligneQuestionnaireRepository.findAll();
 			
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-		}
 	}
 
 	@Override
-	public LigneQuestionnaire getbyID(Long idLigneQuestionnaire) throws ApiNoContentException, ApiInternalServerErrorExeption {
-		try{
+	public LigneQuestionnaire getbyID(Long idLigneQuestionnaire){
 			if(ligneQuestionnaireRepository.existsById(idLigneQuestionnaire)){
 				return ligneQuestionnaireRepository.getOne(idLigneQuestionnaire);
 			}
 			throw new ApiNoContentException("No result founded");
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new ApiInternalServerErrorExeption("Internal Server Error");
-		}
 	}
 
 	@Override
 	public LigneQuestionnaire save(LigneQuestionnaire lq) throws ApiInternalServerErrorExeption {
 		try {
-			if(!groupeRepository.existsById(lq.getGroupe().getIdEquipe())){
+			if(!groupeRepository.existsById(lq.getGroupe().getIdGroupe())){
 				throw new ApiNotFoundException("Groupe does not exist");
 			}
 			if(!questionnaireRepository.existsById(lq.getQuestionnaire().getIdQuestionnaire())){
 				throw new ApiNotFoundException("Qusestionnaire does not exist");
 			}
-			if(ligneQuestionnaireRepository.findByQuestionnaireAndGroupe(lq.getQuestionnaire(), lq.getGroupe())!=null){
+			if(ligneQuestionnaireRepository.findLigneQuestionnaireByQuestionnaireIdAndGroupeId(lq.getQuestionnaire().getIdQuestionnaire(), lq.getGroupe().getIdGroupe())!=null){
 				throw new ApiConflictException("Ligne already exist");
 			}
-			Annonce  a = groupeRepository.findById(lq.getGroupe().getIdEquipe()).get().getAnnonce();
+			Annonce  a = groupeRepository.findById(lq.getGroupe().getIdGroupe()).get().getAnnonce();
 			if(!lq.getDateDebutReponse().after(a.getDateDebutTravail())
 					|| !lq.getDateDebutReponse().before(a.getDateFinTravail())
 					|| !lq.getDateFinReponse().after(a.getDateDebutTravail())

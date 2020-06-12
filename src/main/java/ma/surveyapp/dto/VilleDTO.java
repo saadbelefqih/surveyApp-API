@@ -10,7 +10,7 @@ import lombok.Data;
 public class VilleDTO {
 	private Long idVille;
 	@NotBlank
-    @Size(max = 40)
+    @Size(max = 40,min=4)
 	private String libelleVille;
 	private Float latitudeVille;
 	private Float longitudeVille;

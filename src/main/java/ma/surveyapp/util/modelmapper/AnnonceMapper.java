@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import ma.surveyapp.dto.AnnonceDTO;
 import ma.surveyapp.dto.PublicCibleDTO;
 import ma.surveyapp.model.Annonce;
-import ma.surveyapp.model.PublicCible;
 
 public class AnnonceMapper {
 	
@@ -16,7 +15,9 @@ public class AnnonceMapper {
 		annonceDTO.setId(annonce.getIdAnnonce());
 		annonceDTO.setLibelle(annonce.getLibelleAnnonce());
 		annonceDTO.setDetail(annonce.getDetailAnnonce());
-		annonceDTO.setNbParticipant(annonce.getNbParticipantDemander());
+		annonceDTO.setNbParticipantTheorique(annonce.getNbParticipantDemander());
+		annonceDTO.setNbParticipantPresent(annonce.getDemandes().size());
+		annonceDTO.setNbGroupe(annonce.getGroupes().size());
 		annonceDTO.setDateDebutPublication(annonce.getDateDebutPublication());
 		annonceDTO.setDateFinPublication(annonce.getDateFinPublication());
 		annonceDTO.setDateDebutTravail(annonce.getDateDebutTravail());
@@ -34,18 +35,14 @@ public class AnnonceMapper {
 		annonce.setIdAnnonce(annonceDTO.getId());
 		annonce.setLibelleAnnonce(annonceDTO.getLibelle());
 		annonce.setDetailAnnonce(annonceDTO.getDetail());
-		annonce.setNbParticipantDemander(annonceDTO.getNbParticipant());
+		annonce.setNbParticipantDemander(annonceDTO.getNbParticipantTheorique());
 		annonce.setDateDebutPublication(annonceDTO.getDateDebutPublication());
 		annonce.setDateFinPublication(annonceDTO.getDateFinPublication());
 		annonce.setDateDebutTravail(annonceDTO.getDateDebutTravail());
 		annonce.setDateFinTravail(annonceDTO.getDateFinTravail());
-		if(!annonceDTO.getPublicsCible().isEmpty()){
-			Set<PublicCible>publicsCible=annonceDTO.getPublicsCible().stream().map(pubCibleDTO->{
-				return PublicCibleMapper.publicCibleDtoToPublicCible(pubCibleDTO);
-			}).collect(Collectors.toSet());
-			annonce.setPublics(publicsCible);
-		}
+		annonce.setDemandes(new HashSet<>());
 		annonce.setPublics(new HashSet<>());
+		annonce.setGroupes(new HashSet<>());
 		
 		return annonce;
 	}
