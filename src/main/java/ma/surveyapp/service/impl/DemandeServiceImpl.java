@@ -318,7 +318,7 @@ public class DemandeServiceImpl implements DemandeService{
 	public DemandeResponseDTO getByDemandeIdAndParticipantId(Long idDemande, Long idparticipant){
 			Demande d = new Demande();			
 			d=demandeRepository.findById(idDemande).get();
-			if(d.getParticipant().getIdParticipant()!=idparticipant){
+			if(d.getParticipant().getIdpers()!=idparticipant){
 				throw new ApiNotFoundException("Participant Error !!!");
 			}
 			return DemandeMapper.demandeToDemandeDTO(d);

@@ -185,7 +185,7 @@ public class ReponseServiceImpl implements ReponseService{
 			if(!demandeRepository.existsById(idDemande)){
 				throw new ApiNotFoundException("Demande does not exist");
 			}
-			if(demandeRepository.getOne(idDemande).getParticipant().getIdParticipant()!=idParticipant){
+			if(demandeRepository.getOne(idDemande).getParticipant().getIdpers()!=idParticipant){
 				throw new ApiNotFoundException("Error Participant !!!");
 			}
 			List<ReponseResponseDTO> lists=new ArrayList<>();

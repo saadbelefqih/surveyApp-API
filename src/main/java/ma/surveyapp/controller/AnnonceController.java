@@ -1,13 +1,16 @@
 package ma.surveyapp.controller;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,8 @@ import ma.surveyapp.dto.PublicCibleDTO;
 import ma.surveyapp.exception.ApiBadRequestException;
 import ma.surveyapp.service.AnnonceService;
 import ma.surveyapp.service.DemandeService;
+
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping(value="/api/annonces",produces=MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
@@ -44,11 +49,17 @@ public class AnnonceController {
 	 */
 	
 	@GetMapping
-	public Page<AnnonceDTO> getAll(@RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="15")int size){
-		return annonceService.getAll(page,size);
+	public Page<AnnonceDTO> getAll(
+			@RequestParam(name="words",defaultValue="",required=false)String words,
+			@RequestParam(name="datedebut",required=false)@DateTimeFormat(pattern = "yyyy-MM-dd") String datedebut,
+			@RequestParam(name="datefin",required=false)@DateTimeFormat(pattern = "yyyy-MM-dd") String datefin,
+			@RequestParam(name="page",defaultValue="0")int page,
+			@RequestParam(name="size",defaultValue="6")int size) throws ParseException{
+		
+		return annonceService.getAll(words,datedebut,datefin,page,size);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/getOne/{id}")
 	public AnnonceDTO getOne(@PathVariable("id")Long id){
 		return annonceService.getByID(id);
 	}

@@ -7,16 +7,18 @@ public class ParticipantMapper {
 	
 	public static ParticipantResponseDTO ParticipantToParticipantResponseDto(Participant participant){
 		ParticipantResponseDTO participantResponseDTO = new ParticipantResponseDTO();
-		participantResponseDTO.setId(participant.getIdParticipant());
-		participantResponseDTO.setGenre(participant.getGenreParticipant());
-		participantResponseDTO.setAdresse(participant.getAdresseParticipant());
-		participantResponseDTO.setDateNaissance(participant.getDateNaissance());
-		participantResponseDTO.setEmail(participant.getEmailParticipant());
-		participantResponseDTO.setImageURL(participant.getImageURLParticipant());
-		participantResponseDTO.setNom(participant.getNomParticipant());
-		participantResponseDTO.setPrenom(participant.getPrenomParticipant());
+		participantResponseDTO.setId(participant.getIdpers());
+		participantResponseDTO.setGenre(participant.getGenre());
+		participantResponseDTO.setAdresse(participant.getAdresse());
+		participantResponseDTO.setDateNaissance(participant.getDatenais());
+		participantResponseDTO.setEmail(participant.getEmail());
+		participantResponseDTO.setImageURL(participant.getPhoto());
+		participantResponseDTO.setNom(participant.getNom());
+		participantResponseDTO.setPrenom(participant.getPrenom());
+		participantResponseDTO.setUsername(participant.getUsername());
+		//participantResponseDTO.setPassword(participant.getPassword());
 		participantResponseDTO.setProfession(ProfessionMapper.ProfessionToProfessionDTO(participant.getProfession()));
-		participantResponseDTO.setTel(participant.getTelParticipant());
+		participantResponseDTO.setTel(participant.getNtel());
 		participantResponseDTO.setVille(VilleMapper.villeToVilleDTO(participant.getVille()));
 		return participantResponseDTO;
 	}

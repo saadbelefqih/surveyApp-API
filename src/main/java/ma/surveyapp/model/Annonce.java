@@ -48,6 +48,4 @@ public class Annonce {
     private Set<Demande> demandes=new HashSet<>();
 	@OneToMany(mappedBy = "annonce",fetch=FetchType.LAZY)
     private Set<Groupe> groupes=new HashSet<>();
-	
-
 }

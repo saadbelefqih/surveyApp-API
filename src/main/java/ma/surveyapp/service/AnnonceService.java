@@ -1,5 +1,6 @@
 package ma.surveyapp.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import ma.surveyapp.dto.PublicCibleDTO;
 
 public interface AnnonceService {
 	
-	Page<AnnonceDTO> getAll(int page, int size);
+	Page<AnnonceDTO> getAll(String intitule,String dateDebutPub,String dateFinPub, int page, int size)throws ParseException;
 	AnnonceDTO getByID(Long idAnnonce);
 	AnnonceDTO save(AnnonceDTO annonceDTO);
 	AnnonceDTO addPublicCibleToAnnonce(Long idAnnonce,Set<PublicCibleDTO> publicsCible);

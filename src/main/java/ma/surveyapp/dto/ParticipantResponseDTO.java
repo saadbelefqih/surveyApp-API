@@ -1,6 +1,7 @@
 package ma.surveyapp.dto;
 
 import java.util.Date;
+import java.util.Set;
 
 import lombok.Data;
 @Data
@@ -16,7 +17,10 @@ public class ParticipantResponseDTO {
 	private String email;
 	private String tel;
 	private String adresse;
+	private String username;
+	private String password;
 	private VilleDTO ville;
     private ProfessionDTO profession;
+    private Set<RoleDTO> roles;
 
 }

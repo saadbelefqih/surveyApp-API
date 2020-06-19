@@ -52,7 +52,7 @@ public class ParticipantServiceImpl implements ParticipantService{
 
 	@Override
 	public ParticipantResponseDTO save(ParticipantRequestDTO participantRequestDTO){
-			if(participantRepository.findByNomParticipantIgnoreCaseAndPrenomParticipantIgnoreCase(participantRequestDTO.getNom(),participantRequestDTO.getPrenom())!=null){
+			if(participantRepository.findByNomIgnoreCaseAndPrenomIgnoreCase(participantRequestDTO.getNom(),participantRequestDTO.getPrenom())!=null){
 				throw new ApiConflictException("Participant already exist");
 			}
 			if(participantRequestDTO.getVille()==null){
@@ -103,14 +103,16 @@ public class ParticipantServiceImpl implements ParticipantService{
 	}
 	//convert Participant request DTO  to Participant persistant
 	private Participant participantDtoToParticipant(Participant participant, ParticipantRequestDTO participantRequestDTO){
-		participant.setGenreParticipant(participantRequestDTO.getGenre());
-		participant.setAdresseParticipant(participantRequestDTO.getAdresse());
-		participant.setDateNaissance(participantRequestDTO.getDateNaissance());
-		participant.setEmailParticipant(participantRequestDTO.getEmail());
-		participant.setImageURLParticipant(participantRequestDTO.getImageURL());
-		participant.setNomParticipant(participantRequestDTO.getNom());
-		participant.setPrenomParticipant(participantRequestDTO.getPrenom());
-		participant.setTelParticipant(participantRequestDTO.getTel());
+		participant.setGenre(participantRequestDTO.getGenre());
+		participant.setAdresse(participantRequestDTO.getAdresse());
+		participant.setDatenais(participantRequestDTO.getDateNaissance());
+		participant.setUsername(participantRequestDTO.getUsername());
+		participant.setPassword(participantRequestDTO.getPassword());
+		participant.setEmail(participantRequestDTO.getEmail());
+		participant.setPhoto(participantRequestDTO.getImageURL());
+		participant.setNom(participantRequestDTO.getNom());
+		participant.setPrenom(participantRequestDTO.getPrenom());
+		participant.setNtel(participantRequestDTO.getTel());
 		participant.setVille(villeRepository.findById(participantRequestDTO.getVille()).get());
 		participant.setProfession(professionRepository.findById(participantRequestDTO.getProfession()).get());
 		return participant;

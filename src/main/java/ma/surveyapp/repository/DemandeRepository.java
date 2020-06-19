@@ -13,7 +13,7 @@ import ma.surveyapp.model.Participant;
 
 public interface DemandeRepository extends JpaRepository<Demande, Long>{
 
-	 @Query("SELECT d FROM Demande d WHERE d.annonce.idAnnonce = :anId AND d.participant.idParticipant = :parId")
+	 @Query("SELECT d FROM Demande d WHERE d.annonce.idAnnonce = :anId AND d.participant.idpers = :parId")
 	Demande getAnnonceAndParticipant(
 				@Param("anId") Long annnonceId,@Param("parId") Long participantId);
 	 
@@ -21,23 +21,23 @@ public interface DemandeRepository extends JpaRepository<Demande, Long>{
 		Demande getByIdAnnonceAndIdDemande(
 					@Param("anId") Long annnonceId,@Param("dmdId") Long demandeId);
 	 
-	 @Query("SELECT d FROM Demande d WHERE d.participant.idParticipant = :parId AND d.idDemande = :dmdId")
+	 @Query("SELECT d FROM Demande d WHERE d.participant.idpers = :parId AND d.idDemande = :dmdId")
 		Demande getByIdParticipantAndIdDemande(
 					@Param("parId") Long participantId,@Param("dmdId") Long demandeId);
 	 
-	 @Query("SELECT d FROM Demande d WHERE d.participant.idParticipant = :parId")
+	 @Query("SELECT d FROM Demande d WHERE d.participant.idpers = :parId")
 	 List<Demande> getByIdParticipant(
 					@Param("parId") Long participantId);
 	 
-	 @Query("SELECT d FROM Demande d WHERE d.participant.idParticipant = :parId AND d.isValide = true AND d.isRefuse = false AND d.isPending = false")
+	 @Query("SELECT d FROM Demande d WHERE d.participant.idpers = :parId AND d.isValide = true AND d.isRefuse = false AND d.isPending = false")
 	 List<Demande> getByValideDemandesByIdParticipant(
 					@Param("parId") Long participantId);
 	 
-	 @Query("SELECT d FROM Demande d WHERE d.participant.idParticipant = :parId AND d.isValide = false AND d.isRefuse = true AND d.isPending = false")
+	 @Query("SELECT d FROM Demande d WHERE d.participant.idpers = :parId AND d.isValide = false AND d.isRefuse = true AND d.isPending = false")
 	 List<Demande> getByRefuseDemandesByIdParticipant(
 					@Param("parId") Long participantId);
 	 
-	 @Query("SELECT d from Demande d WHERE d.participant.idParticipant = :parId AND d.isValide = false AND d.isRefuse = false AND d.isPending = true")
+	 @Query("SELECT d from Demande d WHERE d.participant.idpers = :parId AND d.isValide = false AND d.isRefuse = false AND d.isPending = true")
 	 List<Demande> getByPendingDemandesByIdParticipant(
 					@Param("parId") Long participantId);
 	 

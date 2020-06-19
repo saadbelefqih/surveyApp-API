@@ -1,6 +1,9 @@
 package ma.surveyapp.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +14,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -48,22 +52,36 @@ import ma.surveyapp.util.modelmapper.PublicCibleMapper;
 @Service
 @RequiredArgsConstructor
 public class AnnonceServiceImpl implements AnnonceService{
+	
 	private final AnnonceRepository annonceRepository;
 	private final PublicCibleReposirory publicCibleReposirory;
 	private final GroupeRepository groupeRepository;
 	private final QuestionnaireRepository questionnaireRepository;
 	private final LigneQuestionnaireRepository ligneQuestionnaireRepository;
 	private final ReponseDetailsRepository reponseDetailsRepository;
+	
 	@Override
-	public Page<AnnonceDTO> getAll(int page, int size){
-		
+	public Page<AnnonceDTO> getAll(String value,String dateDebut,String dateFin,int page, int size) throws ParseException{
+		Page<Annonce>annoncesPage = new PageImpl<>(new ArrayList<>());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		if(!dateDebut.isEmpty() && !dateFin.isEmpty()){
+			Date dDebut = formatter.parse(dateDebut);
+			Date dFin = formatter.parse(dateFin);
+			annoncesPage=annonceRepository.findFullSearchByDateDebutAndFinTravail(value.toUpperCase(),value.toUpperCase(),dDebut,dFin,new Date(),PageRequest.of(page, size));}
+		else if(!dateDebut.isEmpty() && dateFin.isEmpty()){
+			Date dDebut = formatter.parse(dateDebut);
+			annoncesPage=annonceRepository.findFullSearchByDateDebutTrvail(value.toUpperCase(),value.toUpperCase(),dDebut,new Date(),PageRequest.of(page, size));}
+		else if(dateDebut.isEmpty() && !dateFin.isEmpty()){
+			Date dFin = formatter.parse(dateFin);
+			annoncesPage=annonceRepository.findFullSearchByDateFinTravail(value.toUpperCase(),value.toUpperCase(),dFin,new Date(),PageRequest.of(page, size));}
+		else {annoncesPage=annonceRepository.findFullSearch(value.toUpperCase(),value.toUpperCase(),new Date(),PageRequest.of(page, size));}
 			List<AnnonceDTO> annonces=new ArrayList<AnnonceDTO>();
-			annonces= annonceRepository.findAll(PageRequest.of(page, size)).stream().
+			annonces= annoncesPage.getContent().stream().
 					map(annonce->{return AnnonceMapper.annonceToAnnonceDTO(annonce);}).collect(Collectors.toList());
-			if(!annonces.isEmpty()){
-				return  new PageImpl<>(annonces, PageRequest.of(page, size), annonces.size());
-			}
-			throw new ApiNotFoundException("No result founded");
+				return  new PageImpl<>(annonces, PageRequest.of(page, size, Sort.by(
+					    Sort.Order.desc("dateDebutPublication"),
+					    Sort.Order.desc("dateFinPublication"))),annoncesPage.getTotalElements());
+			
 	}
 
 	@Override
